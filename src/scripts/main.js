@@ -2,15 +2,25 @@
 // #region menu
 const menuButtons = document.querySelectorAll('.top-bar__menu-button');
 const sideMenu = document.querySelector('.page__menu');
+const menuLinks = document.querySelectorAll('.menu__nav .nav__link');
+
+function toggleMenu(forceState) {
+  const isActive =
+    forceState !== undefined
+      ? forceState
+      : !sideMenu.classList.contains('is-open');
+
+  sideMenu.classList.toggle('is-open', isActive);
+  document.querySelector('.page__body').classList.toggle('no-scroll', isActive);
+  menuButtons.forEach((b) => b.classList.toggle('is-active', isActive));
+}
 
 menuButtons.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const isActive = sideMenu.classList.toggle('is-open');
-    document
-      .querySelector('.page__body')
-      .classList.toggle('no-scroll', isActive);
-    menuButtons.forEach((b) => b.classList.toggle('is-active', isActive));
-  });
+  btn.addEventListener('click', () => toggleMenu());
+});
+
+menuLinks.forEach((link) => {
+  link.addEventListener('click', () => toggleMenu(false));
 });
 
 // #endregion
@@ -42,6 +52,14 @@ rightArrow.addEventListener('click', (e) => {
     currentIndex = 1;
   }
   updateSlider();
+
+  function updateSlider() {
+    slider.classList.add('is-fading');
+    setTimeout(() => {
+      slider.className = `header__slider slider slider--${currentIndex}`;
+      slider.classList.remove('is-fading');
+    }, 200);
+  }
 });
 
 // #endregion
